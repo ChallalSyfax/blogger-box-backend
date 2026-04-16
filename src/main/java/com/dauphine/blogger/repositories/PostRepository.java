@@ -14,6 +14,6 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     List<Post> findAllByOrderByCreatedDateDesc();
 
-    @Query("SELECT p FROM Post p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :value, '%')) OR LOWER(p.content) LIKE LOWER(CONCAT('%', :value, '%'))")
+    @Query("SELECT p FROM Post p WHERE LOWER(p.title) LIKE LOWER(CONCAT('%', :value, '%')) OR LOWER(p.content) LIKE LOWER(CONCAT('%', :value, '%')) ORDER BY p.createdDate DESC")
     List<Post> findAllByTitleOrContent(@Param("value") String value);
 }

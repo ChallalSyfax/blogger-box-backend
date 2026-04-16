@@ -6,6 +6,7 @@ import com.dauphine.blogger.models.Category;
 import com.dauphine.blogger.services.CategoryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -43,7 +44,7 @@ public class CategoryController {
 
     @PostMapping
     @Operation(summary = "Create a new category")
-    public ResponseEntity<Category> create(@RequestBody CategoryRequest request) {
+    public ResponseEntity<Category> create(@Valid @RequestBody CategoryRequest request) {
         Category category = categoryService.create(request.getName());
         return ResponseEntity.status(HttpStatus.CREATED).body(category);
     }
@@ -52,7 +53,7 @@ public class CategoryController {
     @Operation(summary = "Update an existing category")
     public ResponseEntity<Category> update(
             @PathVariable UUID id,
-            @RequestBody CategoryRequest request) throws CategoryNotFoundByIdException {
+            @Valid @RequestBody CategoryRequest request) throws CategoryNotFoundByIdException {
         Category category = categoryService.update(id, request.getName());
         return ResponseEntity.ok(category);
     }
@@ -61,7 +62,7 @@ public class CategoryController {
     @Operation(summary = "Update the name of an existing category")
     public ResponseEntity<Category> updateName(
             @PathVariable UUID id,
-            @RequestBody CategoryRequest request) throws CategoryNotFoundByIdException {
+            @Valid @RequestBody CategoryRequest request) throws CategoryNotFoundByIdException {
         Category category = categoryService.update(id, request.getName());
         return ResponseEntity.ok(category);
     }

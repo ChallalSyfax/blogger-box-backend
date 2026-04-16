@@ -7,6 +7,7 @@ import com.dauphine.blogger.models.Post;
 import com.dauphine.blogger.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,7 +45,7 @@ public class PostController {
 
     @PostMapping
     @Operation(summary = "Create a new post")
-    public ResponseEntity<Post> create(@RequestBody PostRequest request) throws CategoryNotFoundByIdException {
+    public ResponseEntity<Post> create(@Valid @RequestBody PostRequest request) throws CategoryNotFoundByIdException {
         Post post = postService.create(
                 request.getTitle(),
                 request.getContent(),
@@ -57,7 +58,7 @@ public class PostController {
     @Operation(summary = "Update an existing post")
     public ResponseEntity<Post> update(
             @PathVariable UUID id,
-            @RequestBody PostRequest request) throws PostNotFoundByIdException, CategoryNotFoundByIdException {
+            @Valid @RequestBody PostRequest request) throws PostNotFoundByIdException, CategoryNotFoundByIdException {
         Post post = postService.update(
                 id,
                 request.getTitle(),

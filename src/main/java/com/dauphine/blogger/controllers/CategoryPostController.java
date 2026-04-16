@@ -1,6 +1,8 @@
 package com.dauphine.blogger.controllers;
 
+import com.dauphine.blogger.exceptions.CategoryNotFoundByIdException;
 import com.dauphine.blogger.models.Post;
+import com.dauphine.blogger.services.CategoryService;
 import com.dauphine.blogger.services.PostService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -16,14 +18,17 @@ import java.util.UUID;
 public class CategoryPostController {
 
     private final PostService postService;
+    private final CategoryService categoryService;
 
-    public CategoryPostController(PostService postService) {
+    public CategoryPostController(PostService postService, CategoryService categoryService) {
         this.postService = postService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping("/{id}/posts")
     @Operation(summary = "Retrieve all posts of a category")
-    public ResponseEntity<List<Post>> getPostsByCategoryId(@PathVariable UUID id) {
+    public ResponseEntity<List<Post>> getPostsByCategoryId(@PathVariable UUID id) throws CategoryNotFoundByIdException {
+        categoryService.getById(id);
         List<Post> posts = postService.getAllByCategoryId(id);
         return ResponseEntity.ok(posts);
     }
